@@ -10,6 +10,7 @@
 
   <properties>
     <scala.version>2.12</scala.version>
+    <scala.full.version>${scala.version}.18</scala.full.version>
     <spark.version>3.5.1</spark.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -19,7 +20,7 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.18</version>
+      <version>${scala.full.version}</version>
     </dependency>
 
     <!-- Spark dependencies -->
@@ -27,19 +28,35 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_${scala.version}</artifactId>
       <version>${spark.version}</version>
-      <scope>provided</scope>
+      <!-- <scope>provided</scope> -->
     </dependency>
+
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_${scala.version}</artifactId>
       <version>${spark.version}</version>
-      <scope>provided</scope>
+    <!-- <scope>provided</scope> -->
+  </dependency>
+
+  <!-- log dependencies-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.36</version>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <!-- Plugin to package all the dependencies in a fat JAR -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>com.AEMET.spark.Main</mainClass>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -67,9 +84,9 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>4.5.6</version>
+        <version>4.8.1</version>
         <configuration>
-          <scalaVersion>${scala.version}.18</scalaVersion>
+          <scalaVersion>${scala.full.version}</scalaVersion>
         </configuration>
         <executions>
           <execution>
